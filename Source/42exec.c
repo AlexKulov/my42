@@ -155,7 +155,7 @@ long AdvanceTime(void)
             JDToGpsTime(TT.JulDay,&GpsRollover,&GpsWeek,&GpsSecond);
             DynTime0 = DynTime - SimTime;
 
-            break;
+            break;/*
          case NOS3_TIME :
             NOS3Time(&UTC.Year,&UTC.doy,&UTC.Month,&UTC.Day,
                &UTC.Hour,&UTC.Minute,&UTC.Second);
@@ -174,7 +174,7 @@ long AdvanceTime(void)
 
             JDToGpsTime(TT.JulDay,&GpsRollover,&GpsWeek,&GpsSecond);
             SimTime = DynTime - DynTime0;
-            break;
+            break;*/
       }
 
       /* Check for end of run */
