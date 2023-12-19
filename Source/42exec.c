@@ -26,6 +26,16 @@
    extern int HandoffToGui(int argc, char **argv);
 #endif
 
+#ifdef _USE_QTPLOT_
+    #ifdef __cplusplus
+    extern "C"{
+    #endif
+    extern void ToPlot(double Time);
+    #ifdef __cplusplus
+    };
+    #endif
+#endif
+
 /**********************************************************************/
 void ReportProgress(void)
 {
@@ -360,6 +370,9 @@ long SimStep(void)
          }
       }
       Report();  /* File Output */
+      #ifdef _USE_QTPLOT_
+      ToPlot(SimTime);
+      #endif
 
       /* Exit when Stoptime is reached */
       if (SimComplete) {

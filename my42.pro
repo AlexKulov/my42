@@ -3,8 +3,31 @@ QT -= gui
 CONFIG += console
 CONFIG -= app_bundle
 
-DEFINES += _USE_GUI_
+#DEFINES += _USE_GUI_
 DEFINES += _USE_SHADERS_
+
+CONFIG += QTPLOT
+QTPLOT {
+    DEFINES += _USE_QTPLOT_
+    QT += core gui widgets
+    QT+=network printsupport #for customplot
+    INCLUDEPATH +=PlotQt \
+
+    SOURCES += \
+    PlotQt/Source/mainwindow.cpp \
+    PlotQt/main.cpp \
+    PlotQt/qcustomplot.cpp \
+
+    HEADERS += \
+    PlotQt/Source/mainwindow.h \
+    PlotQt/qcustomplot.h
+
+    FORMS += \
+    PlotQt/mainwindow.ui
+} else {
+    SOURCES += \
+    Source/42main.c \
+}
 
 INCLUDEPATH +=Include \
               Include/GL \
@@ -14,6 +37,7 @@ INCLUDEPATH +=Include \
               freeglut/include \
               freeglut/include/GL \
               glfw\include\GLFW \
+              #PlotQt \
 
 SOURCES += \
         Kit/Source/dcmkit.c \
@@ -39,11 +63,11 @@ SOURCES += \
         Source/42fsw.c \
         Source/42init.c \
         Source/42ipc.c \
-        Source/42main.c \
+        #Source/42main.c \
         Source/42perturb.c \
         Source/42report.c \
         Source/42sensors.c \
-    Source/AcApp.c \
+        Source/AcApp.c \
         Source/IPC/SimReadFromFile.c \
         Source/IPC/SimReadFromSocket.c \
         Source/IPC/SimWriteToFile.c \
@@ -60,6 +84,6 @@ HEADERS += \
     Include/42glfwgui.h \
     Include/42types.h \
     Include/AcTypes.h \
-    Kit/Include/glkit.h
+    Kit/Include/glkit.h \
 
 LIBS += -lopengl32 -lfreeglut -lglu32 -lws2_32 -lglew32
