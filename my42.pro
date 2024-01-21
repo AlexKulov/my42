@@ -48,6 +48,7 @@ SOURCES += \
         Source/IPC/SimReadFromSocket.c \
         Source/IPC/SimWriteToFile.c \
         Source/IPC/SimWriteToSocket.c \
+    Source/IPC/SmaoWriteReadSocket.c
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

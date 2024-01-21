@@ -210,6 +210,7 @@ long DecodeString(char *s)
       else if (!strcmp(s,"READFILE")) return IPC_READFILE;
       else if (!strcmp(s,"SPIRENT")) return IPC_SPIRENT;
       else if (!strcmp(s,"FFTB")) return IPC_FFTB;
+      else if (!strcmp(s,"IPC_SMAO_TX")) return IPC_SMAO_TX;
       else if (!strcmp(s,"SERVER")) return IPC_SERVER;
       else if (!strcmp(s,"CLIENT")) return IPC_CLIENT;
       else if (!strcmp(s,"GMSEC_CLIENT")) return IPC_GMSEC_CLIENT;

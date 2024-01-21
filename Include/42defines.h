@@ -279,6 +279,7 @@
 #define IPC_SERVER 0
 #define IPC_CLIENT 1
 #define IPC_GMSEC_CLIENT 2
+#define IPC_SMAO_TX 3
 
 /* Secs from J2000 to the Unix epoch of 1 Jan 1970 */
 #define UNIX_EPOCH (-946728000.0)

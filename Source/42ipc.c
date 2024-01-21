@@ -74,7 +74,8 @@ void InitInterProcessComm(void)
          I->Init = 1;
 
          if (I->Mode == IPC_TX) {
-            if (I->SocketRole == IPC_SERVER) {
+            if (I->SocketRole == IPC_SERVER ||
+                I->SocketRole == IPC_SMAO_TX) {
                I->Socket = InitSocketServer(I->Port,I->AllowBlocking);
             }
             else if (I->SocketRole == IPC_CLIENT) {
@@ -155,6 +156,9 @@ void InitInterProcessComm(void)
       fclose(infile);
 }
 /*********************************************************************/
+extern void SmaoWriteSocket(SOCKET Socket, double sendVal);
+extern long SmaoReadSocket(SOCKET Socket, double * time);
+
 void InterProcessComm(void)
 {
       struct IpcType *I;
@@ -163,8 +167,23 @@ void InterProcessComm(void)
       for(Iipc=0;Iipc<Nipc;Iipc++) {
          I = &IPC[Iipc];
          if (I->Mode == IPC_TX) {
-            if (I->SocketRole != IPC_GMSEC_CLIENT) {
+            if (I->SocketRole == IPC_SERVER) {
                WriteToSocket(I->Socket,I->Prefix,I->Nprefix,I->EchoEnabled);
+            }
+            else if (I->SocketRole == IPC_SMAO_TX) {
+                static double EventTime = -0.01;
+                static long needRead = TRUE;
+                if(SimTime>=EventTime){
+                    double sockEventTime = 0;
+                    while(needRead)
+                        needRead = SmaoReadSocket(I->Socket, &sockEventTime);
+                    EventTime = sockEventTime;
+                }
+
+                if(SimTime+DTSIM>EventTime){
+                    SmaoWriteSocket(I->Socket, SC[0].Eclipse);
+                    needRead = TRUE;
+                }
             }
             #ifdef _ENABLE_GMSEC_
             else {
