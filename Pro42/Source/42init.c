@@ -3915,7 +3915,7 @@ void InitSim(int argc, char **argv)
       D2R = Pi/180.0;
       GoldenRatio = (1.0+sqrt(5.0))/2.0;
 
-      sprintf(InOutPath,"./InOut/");
+      sprintf(InOutPath,"../InOut/"); //sprintf(InOutPath,"./InOut/");
       sprintf(ModelPath,"./Model/");
       if (argc > 1) sprintf(InOutPath,"./%s/",argv[1]);
       if (argc > 2) sprintf(ModelPath,"./%s/",argv[2]);
