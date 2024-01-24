@@ -5,5 +5,8 @@ a.out
 *~
 *.webarchive
 *.42
+*.exe
+*.user
+*.stash
 42
 
