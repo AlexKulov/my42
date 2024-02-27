@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QProgressBar>
+#include <QMouseEvent>
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,13 @@ void StartSimulation();
 
 private:
 Ui::MainWindow *ui;
+
+void setupPlots();
+
+private slots:
+void doubleClickSlot(QMouseEvent *event);
+void pressEventSlot(QMouseEvent *event);
+void releaseEventSlot(QMouseEvent *event);
 
 private:
     unsigned int uiPlotSampleCounter;

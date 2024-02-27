@@ -37,7 +37,7 @@
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Параметры СУД</string>
+        <string>Графики 1</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
@@ -49,26 +49,26 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Угол с р.в. на Солнце</string>
+           <string>График 11</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Угловая скорость в ИСК</string>
+           <string>График 13</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Углы Эйлера в ОСК</string>
+           <string>График 12</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QCustomPlot" name="customPlot2" native="true">
+         <widget class="QCustomPlot" name="Plot12" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -78,7 +78,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QCustomPlot" name="customPlot1" native="true">
+         <widget class="QCustomPlot" name="Plot11" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -88,7 +88,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QCustomPlot" name="customPlot3" native="true">
+         <widget class="QCustomPlot" name="Plot13" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -101,13 +101,13 @@
       </widget>
       <widget class="QWidget" name="tab_spec">
        <attribute name="title">
-        <string>Параметры маховиков</string>
+        <string>Графики 2</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_8">
         <item row="1" column="0">
          <widget class="QLabel" name="labelWheelPower">
           <property name="text">
-           <string>Момент маховиков, Нм</string>
+           <string>График 22</string>
           </property>
          </widget>
         </item>
@@ -120,12 +120,12 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Кинетический момент, Нмс</string>
+           <string>График 21</string>
           </property>
          </widget>
         </item>
         <item row="0" column="3">
-         <widget class="QCustomPlot" name="plotKm" native="true">
+         <widget class="QCustomPlot" name="Plot21" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -135,31 +135,31 @@
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QCustomPlot" name="plotWheelPower" native="true"/>
+         <widget class="QCustomPlot" name="Plot22" native="true"/>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
-        <string>Параметры типового КА ДЗЗ</string>
+        <string>Графики 3</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Режимы МКА</string>
+           <string>График 31</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_9">
           <property name="text">
-           <string>Работа ЦА, ЗРВ</string>
+           <string>График 32</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QCustomPlot" name="plotScMode" native="true">
+         <widget class="QCustomPlot" name="Plot31" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -169,7 +169,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QCustomPlot" name="plotWorkAndZRV" native="true">
+         <widget class="QCustomPlot" name="Plot32" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>

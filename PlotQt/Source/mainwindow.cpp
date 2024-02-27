@@ -2,69 +2,41 @@
 #include "ui_mainwindow.h"
 
 Ui::MainWindow * extUi;
+double mSimTime;  //Для передачи параметра в методы класса из внешней функции CppToPlot
 
 MainWindow::MainWindow(QWidget *parent) :
 QMainWindow(parent),
 ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     setWindowTitle("Simulation spacecraft");
-
     connect (ui->pushButtonSimulation,&QAbstractButton::clicked,this,&MainWindow::StartSimulation);
+    setupPlots();
 
-    ui->customPlot1->addGraph();
-    ui->customPlot1->graph(0)->setPen(QColor(Qt::red));
-    ui->customPlot1->addGraph();
-    ui->customPlot1->graph(1)->setPen(QColor(Qt::green));
-    ui->customPlot1->addGraph();
-    ui->customPlot1->graph(2)->setPen(QColor(Qt::blue));
+    ui->Plot11->addGraph();
+    ui->Plot11->graph(0)->setPen(QColor(Qt::red));
 
-    ui->customPlot2->addGraph();
-    ui->customPlot2->graph(0)->setPen(QColor(Qt::red));
-    ui->customPlot2->addGraph();
-    ui->customPlot2->graph(1)->setPen(QColor(Qt::green));
-    ui->customPlot2->addGraph();
-    ui->customPlot2->graph(2)->setPen(QColor(Qt::blue));
+    ui->Plot12->addGraph();
+    ui->Plot12->graph(0)->setPen(QColor(Qt::red));
+    ui->Plot12->addGraph();
+    ui->Plot12->graph(1)->setPen(QColor(Qt::green));
 
-    ui->customPlot3->addGraph();
-    ui->customPlot3->graph(0)->setPen(QColor(Qt::red));
-    ui->customPlot3->addGraph();
-    ui->customPlot3->graph(1)->setPen(QColor(Qt::green));
-    ui->customPlot3->addGraph();
-    ui->customPlot3->graph(2)->setPen(QColor(Qt::blue));
-    ui->customPlot3->addGraph();
-    ui->customPlot3->graph(3)->setPen(QColor(Qt::black));
+    ui->Plot13->addGraph();
+    ui->Plot13->graph(0)->setPen(QColor(Qt::red));
+    ui->Plot13->addGraph();
+    ui->Plot13->graph(1)->setPen(QColor(Qt::green));
+    ui->Plot13->addGraph();
+    ui->Plot13->graph(2)->setPen(QColor(Qt::blue));
 
-    ui->plotKm->addGraph();
-    ui->plotKm->graph(0)->setPen(QColor(Qt::red));
-    ui->plotKm->addGraph();
-    ui->plotKm->graph(1)->setPen(QColor(Qt::green));
-    ui->plotKm->addGraph();
-    ui->plotKm->graph(2)->setPen(QColor(Qt::blue));
-    ui->plotKm->addGraph();
-    ui->plotKm->graph(3)->setPen(QColor(Qt::black));
+    ui->Plot21->addGraph(); //plotKm
+    ui->Plot21->graph(0)->setPen(QColor(Qt::red));
+    ui->Plot22->addGraph();//plotWheelPower
+    ui->Plot22->graph(0)->setPen(QColor(Qt::red));
 
-    ui->plotWheelPower->addGraph();
-    ui->plotWheelPower->graph(0)->setPen(QColor(Qt::red));
-    ui->plotWheelPower->addGraph();
-    ui->plotWheelPower->graph(1)->setPen(QColor(Qt::green));
-    ui->plotWheelPower->addGraph();
-    ui->plotWheelPower->graph(2)->setPen(QColor(Qt::blue));
-    ui->plotWheelPower->addGraph();
-    ui->plotWheelPower->graph(3)->setPen(QColor(Qt::black));
-
-    ui->plotScMode->addGraph();
-    ui->plotScMode->graph(0)->setPen(QColor(Qt::red));
-    ui->plotScMode->addGraph();
-    ui->plotScMode->graph(1)->setPen(QColor(Qt::blue));
-
-    ui->plotWorkAndZRV->addGraph();
-    ui->plotWorkAndZRV->graph(0)->setPen(QColor(Qt::red));
-    ui->plotWorkAndZRV->addGraph();
-    ui->plotWorkAndZRV->graph(1)->setPen(QColor(Qt::blue));
-    ui->plotWorkAndZRV->addGraph();
-    ui->plotWorkAndZRV->graph(2)->setPen(QColor(Qt::green));
+    ui->Plot31->addGraph();//plotScMode
+    ui->Plot31->graph(0)->setPen(QColor(Qt::red));
+    ui->Plot32->addGraph();//plotWorkAndZRV
+    ui->Plot32->graph(0)->setPen(QColor(Qt::red));
 
     uiPlotSampleCounter=0;
     uiPlotMaxCounter = 10;
@@ -76,84 +48,54 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-double ParamForPlot[4];
-double ParamForPlot3[4];
-double ParamForPlot2[4];
 
-double ParamForPlotVitality[4];
-double ParamForPlotCapSource[4];
-
-double ParamForPlotScMode[4];
-double ParamForPlotWorkAndZRV[4];
-
-double ParamForPlotPower;
-double ParamForPlotCharge;
 void CppToPlot(double SimTime){
+    mSimTime = SimTime;
 
-        double anglOSK[3] = {0,1,2};
+    double ParamPlot11[3] = {0,1,2};
+    double ParamPlot12[3] = {0,1,2};
+    double ParamPlot13[3] = {0,1,2};
 
-        ParamForPlot2[0] = anglOSK[0];
-        ParamForPlot2[1] = anglOSK[1];
-        ParamForPlot2[2] = anglOSK[2];
+    static unsigned int PlotSampleCounter=0;
+    static unsigned int PlotMaxCounter = 10;
 
-        double testAngle[3] = {0,1,2};
-        ParamForPlot3[0]= -testAngle[0]; //SC[0].B->wn[0]* R2D
-        ParamForPlot3[1]= -testAngle[1]; //SC[0].B->wn[1]* R2D
-        ParamForPlot3[2]= -testAngle[2]; //SC[0].B->wn[2]* R2D
+    PlotSampleCounter++;
+    if(PlotSampleCounter>PlotMaxCounter){
+        PlotSampleCounter = 0;
+        extUi->Plot11->graph(0)->addData(SimTime,ParamPlot11[0]);
 
-        ParamForPlotVitality[0] = 0;//;
-        ParamForPlotVitality[1] = 1;
+        extUi->Plot12->graph(0)->addData(SimTime,ParamPlot12[0]);
+        extUi->Plot12->graph(1)->addData(SimTime,ParamPlot12[1]);
 
-        static unsigned int PlotSampleCounter=0;
-        static unsigned int PlotMaxCounter = 10;
+        extUi->Plot13->graph(0)->addData(SimTime,ParamPlot13[0]);
+        extUi->Plot13->graph(1)->addData(SimTime,ParamPlot13[1]);
+        extUi->Plot13->graph(2)->addData(SimTime,ParamPlot13[2]);
 
-        PlotSampleCounter++;
-        if(PlotSampleCounter>PlotMaxCounter){
-            PlotSampleCounter = 0;
-            extUi->customPlot3->graph(0)->addData(SimTime,ParamForPlot3[0]); //wx
-            extUi->customPlot3->graph(1)->addData(SimTime,ParamForPlot3[1]);//wy
-            extUi->customPlot3->graph(2)->addData(SimTime,ParamForPlot3[2]);//wz
-            //ui->customPlot3->graph(3)->addData(SimTime,ParamForPlot3[3]);//wz
+        extUi->Plot21->graph(0)->addData(SimTime,0);
+        extUi->Plot22->graph(0)->addData(SimTime,1);
 
-            extUi->customPlot2->graph(0)->addData(SimTime,ParamForPlot2[0]);
-            extUi->customPlot2->graph(1)->addData(SimTime,ParamForPlot2[1]);
-            extUi->customPlot2->graph(2)->addData(SimTime,ParamForPlot2[2]);
+        extUi->Plot31->graph(0)->addData(SimTime,-1);
+        extUi->Plot32->graph(0)->addData(SimTime,1);
 
-            extUi->customPlot1->graph(0)->addData(SimTime,ParamForPlot[0]);
+        extUi->Plot11->rescaleAxes();
+        extUi->Plot11->replot();
+        extUi->Plot12->rescaleAxes();
+        extUi->Plot12->replot();
+        extUi->Plot13->rescaleAxes();
+        extUi->Plot13->replot();
 
-            extUi->plotScMode->graph(0)->addData(SimTime,ParamForPlotScMode[0]);
-            extUi->plotScMode->graph(1)->addData(SimTime,ParamForPlotScMode[1]);
+        extUi->Plot21->rescaleAxes();
+        extUi->Plot21->replot();
+        extUi->Plot22->rescaleAxes();
+        extUi->Plot22->replot();
 
-            extUi->plotWorkAndZRV->graph(0)->addData(SimTime,ParamForPlotWorkAndZRV[0]);
-            extUi->plotWorkAndZRV->graph(1)->addData(SimTime,ParamForPlotWorkAndZRV[1]);
-            extUi->plotWorkAndZRV->graph(2)->addData(SimTime,ParamForPlotWorkAndZRV[2]);
+        extUi->Plot31->rescaleAxes();
+        extUi->Plot31->replot();
+        extUi->Plot32->rescaleAxes();
+        extUi->Plot32->replot();
 
-            extUi->plotKm->graph(0)->addData(SimTime,0);
-            extUi->plotKm->graph(1)->addData(SimTime,1);
-            extUi->plotKm->graph(2)->addData(SimTime,2);
-
-            extUi->plotWheelPower->graph(0)->addData(SimTime,0);
-            extUi->plotWheelPower->graph(1)->addData(SimTime,1);
-            extUi->plotWheelPower->graph(2)->addData(SimTime,2);
-
-            extUi->customPlot1->rescaleAxes();
-            extUi->customPlot1->replot();
-            extUi->customPlot2->rescaleAxes();
-            extUi->customPlot2->replot();
-            extUi->customPlot3->rescaleAxes();
-            extUi->customPlot3->replot();
-
-            extUi->plotKm->rescaleAxes();
-            extUi->plotKm->replot();
-            extUi->plotWheelPower->rescaleAxes();
-            extUi->plotWheelPower->replot();
-            extUi->plotScMode->rescaleAxes();
-            extUi->plotScMode->replot();
-            extUi->plotWorkAndZRV->rescaleAxes();
-            extUi->plotWorkAndZRV->replot();
-
-            QApplication::processEvents();
-        }
+        QApplication::processEvents();
+    }
 }
 
 #ifdef __cplusplus
@@ -172,4 +114,64 @@ void MainWindow::StartSimulation()
 {
     int argc = 1;
     exec(argc, NULL);
+}
+
+void MainWindow::setupPlots()
+{
+    //Обработка двойных нажатий на графики
+    connect(ui->Plot11, &QCustomPlot::mouseDoubleClick,     this,       &MainWindow::doubleClickSlot);
+    connect(ui->Plot12, &QCustomPlot::mouseDoubleClick,     this,       &MainWindow::doubleClickSlot);
+    connect(ui->Plot13, &QCustomPlot::mouseDoubleClick,     this,       &MainWindow::doubleClickSlot);
+    connect(ui->Plot21, &QCustomPlot::mouseDoubleClick,     this,       &MainWindow::doubleClickSlot);
+    connect(ui->Plot31, &QCustomPlot::mouseDoubleClick,     this,       &MainWindow::doubleClickSlot);
+    connect(ui->Plot22, &QCustomPlot::mouseDoubleClick,     this,       &MainWindow::doubleClickSlot);
+    connect(ui->Plot32, &QCustomPlot::mouseDoubleClick,     this,       &MainWindow::doubleClickSlot);
+
+    //Обработка одиночных нажатий на графики
+    connect(ui->Plot11, &QCustomPlot::mousePress,           this,       &MainWindow::pressEventSlot);
+    connect(ui->Plot12, &QCustomPlot::mousePress,           this,       &MainWindow::pressEventSlot);
+    connect(ui->Plot13, &QCustomPlot::mousePress,           this,       &MainWindow::pressEventSlot);
+    connect(ui->Plot21, &QCustomPlot::mousePress,           this,       &MainWindow::pressEventSlot);
+    connect(ui->Plot31, &QCustomPlot::mousePress,           this,       &MainWindow::pressEventSlot);
+    connect(ui->Plot22, &QCustomPlot::mousePress,           this,       &MainWindow::pressEventSlot);
+    connect(ui->Plot32, &QCustomPlot::mousePress,           this,       &MainWindow::pressEventSlot);
+
+    //Обработка отпускания кнопки мыши над графиками
+    connect(ui->Plot11, &QCustomPlot::mouseRelease,         this,       &MainWindow::releaseEventSlot);
+    connect(ui->Plot12, &QCustomPlot::mouseRelease,         this,       &MainWindow::releaseEventSlot);
+    connect(ui->Plot13, &QCustomPlot::mouseRelease,         this,       &MainWindow::releaseEventSlot);
+    connect(ui->Plot21, &QCustomPlot::mouseRelease,         this,       &MainWindow::releaseEventSlot);
+    connect(ui->Plot31, &QCustomPlot::mouseRelease,         this,       &MainWindow::releaseEventSlot);
+    connect(ui->Plot22, &QCustomPlot::mouseRelease,         this,       &MainWindow::releaseEventSlot);
+    connect(ui->Plot32, &QCustomPlot::mouseRelease,         this,       &MainWindow::releaseEventSlot);
+}
+
+void MainWindow::doubleClickSlot(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    QCustomPlot* plot = qobject_cast<QCustomPlot*>(sender());
+    if(!plot) return;
+    plot->xAxis->setRange(0, mSimTime);
+//    plot->yAxis->setRange(plot->yAxis->range().lower, plot->yAxis->range().upper);
+    plot->replot();
+}
+
+void MainWindow::pressEventSlot(QMouseEvent *event)
+{
+    QCustomPlot * plot = qobject_cast<QCustomPlot*>(sender());
+    if(!plot) return;
+    if(event->button() & Qt::LeftButton) {
+        plot->setSelectionRectMode(QCP::srmZoom);
+    }
+    if(event->button() & Qt::RightButton) {
+        plot->setSelectionRectMode(QCP::srmNone);
+        this->setCursor(Qt::ClosedHandCursor);
+    }
+}
+
+void MainWindow::releaseEventSlot(QMouseEvent *event)
+{
+    if(event->button() & Qt::RightButton) {
+        this->setCursor(Qt::ArrowCursor);
+    }
 }
