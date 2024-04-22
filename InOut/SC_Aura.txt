@@ -1,19 +1,19 @@
 <<<<<<<<<<<<<<<<<  42: Spacecraft Description File   >>>>>>>>>>>>>>>>>
-Simple generic S/C            !  Description
-"S/C"                         !  Label
+EOS Aura                      !  Description
+"Aura"                        !  Label
 GenScSpriteAlpha.ppm          !  Sprite File Name
-PASSIVE_FSW                 !  Flight Software Identifier
+THREE_AXIS_FSW                !  Flight Software Identifier
 0.2                           !  FSW Sample Time, sec
 ************************* Orbit Parameters ****************************
-FIXED                         !  Orbit Prop FIXED, EULER_HILL, ENCKE, or COWELL
+FIXED                         !  Orbit Prop FIXED, EULER_HILL, or ENCKE
 CM                            !  Pos of CM or ORIGIN, wrt F
 0.0  0.0  0.0                 !  Pos wrt Formation (m), expressed in F
 0.0  0.0  0.0                 !  Vel wrt Formation (m/s), expressed in F
 *************************** Initial Attitude ***************************
-NAN                           ! Ang Vel wrt [NL], Att [QA] wrt [NLF]
-0.6    0.5    1.0             ! Ang Vel (deg/sec)
+LAL                           ! Ang Vel wrt [NL], Att [QA] wrt [NLF]
+0.0    0.0    0.0             ! Ang Vel (deg/sec)
 0.0    0.0    0.0    1.0      ! Quaternion
-60.0  50.0   40.0    213      ! Angles (deg) & Euler Sequence
+0.0    0.0    0.0    123      ! Angles (deg) & Euler Sequence
 ***************************  Dynamics Flags  ***************************
 DYN_JOINT                     ! Rotation STEADY, KIN_JOINT, or DYN_JOINT
 FALSE                         ! Passive Joint Forces and Torques Enabled
@@ -25,22 +25,30 @@ FALSE                         ! Include 2nd Order Flex Terms
 ************************************************************************
 ************************* Body Parameters ******************************
 ************************************************************************
-1                             ! Number of Bodies
+2                             ! Number of Bodies
 ================================ Body 0 ================================
-100.0                         ! Mass
-100.0  200.0  300.0           ! Moments of Inertia (kg-m^2)
+1000.0                        ! Mass
+1000.0  2000.0  2000.0        ! Moments of Inertia (kg-m^2)
 0.0  0.0  0.0                 ! Products of Inertia (xy,xz,yz)
-0.0  0.0  0.0                 ! Location of mass center, m
+2.0  0.0  0.0                 ! Location of mass center, m
 0.0  0.0  0.0                 ! Constant Embedded Momentum (Nms)
-IonCruiser.obj                ! Geometry Input File Name
+Aura_MainBody.obj             ! Geometry Input File Name
+NONE                          ! Flex File Name
+================================ Body 1 ================================
+20.0                          ! Mass
+100.0  20.0  100.0            ! Moments of Inertia (kg-m^2)
+0.0  0.0  0.0                 ! Products of Inertia (xy,xz,yz)
+0.0  -8.0  0.0                ! Location of mass center, m
+0.0  0.0  0.0                 ! Constant Embedded Momentum (Nms)
+Aura_SolarArray.obj           ! Geometry Input File Name
 NONE                          ! Flex File Name
 ************************************************************************
 *************************** Joint Parameters ***************************
 ************************************************************************
-         (Number of Joints is Number of Bodies minus one)
-============================== Joint 0 ================================
+        (Number of Joints is Number of Bodies minus one)
+=============================== Joint 0 ================================
 0 1                           ! Inner, outer body indices
-1   213   GIMBAL              ! RotDOF, Seq, GIMBAL or SPHERICAL
+1   231   GIMBAL              ! RotDOF, Seq, GIMBAL or SPHERICAL
 0   123                       ! TrnDOF, Seq
 FALSE  FALSE  FALSE           ! RotDOF Locked
 FALSE  FALSE  FALSE           ! TrnDOF Locked
@@ -50,8 +58,8 @@ FALSE  FALSE  FALSE           ! TrnDOF Locked
 0.0    0.0    0.0             ! Initial Displacement Rates, m/sec
 0.0   0.0  0.0  312           ! Bi to Gi Static Angles [deg] & Seq
 0.0   0.0  0.0  312           ! Go to Bo Static Angles [deg] & Seq
-0.0   0.0  0.0                ! Position wrt inner body origin, m
-0.0   0.0  0.0                ! Position wrt outer body origin, m
+4.1  -1.17  -0.75             ! Position wrt inner body origin, m
+0.00  0.00  0.00              ! Position wrt outer body origin, m
 0.0   0.0  0.0                ! Rot Passive Spring Coefficients (Nm/rad)
 0.0   0.0  0.0                ! Rot Passive Damping Coefficients (Nms/rad)
 0.0   0.0  0.0                ! Trn Passive Spring Coefficients (N/m)
@@ -101,7 +109,7 @@ FALSE  FALSE  FALSE           ! TrnDOF Locked
 ==============================  Thr 0  =================================
  1.0                          ! Thrust Force (N)
 0  -1.0  0.0  0.0             ! Body, Thrust Axis 
- 1.0  1.0  1.0                ! Location in Body, m
+ 1.0  1.0  1.0                ! Location in B0, m
 0                             ! Flex Node Index
 ******************************* Gyro ************************************
 0                                ! Number of Gyro Axes
@@ -115,7 +123,7 @@ FALSE  FALSE  FALSE           ! TrnDOF Locked
 0.1  1.0                      ! Bias Stability (deg/hr) over timespan (hr)
 0.1                           ! Angle Noise, arcsec RMS
 0.1                           ! Initial Bias (deg/hr)
-1                             ! Flex Node Index
+0                             ! Flex Node Index
 *************************** Magnetometer ********************************
 0                             ! Number of Magnetometer Axes
 ============================== Axis 0 ===================================
@@ -125,12 +133,12 @@ FALSE  FALSE  FALSE           ! TrnDOF Locked
 0.0                           ! Scale Factor Error, ppm
 1.0E-6                        ! Quantization, Tesla 
 1.0E-6                        ! Noise, Tesla RMS
-1                             ! Flex Node Index
+0                             ! Flex Node Index
 *********************** Coarse Sun Sensor *******************************
 0                             ! Number of Coarse Sun Sensors
 ============================== CSS 0 ====================================
 0.1                           ! Sample Time,sec
-0    1.0  1.0  1.0            ! Body, Axis expressed in Body Frame
+0   1.0  1.0  1.0             ! Axis expressed in Body Frame
 90.0                          ! Half-cone Angle, deg
 1.0                           ! Scale Factor
 0.001                         ! Quantization
@@ -139,7 +147,7 @@ FALSE  FALSE  FALSE           ! TrnDOF Locked
 0                             ! Number of Fine Sun Sensors
 =============================== FSS 0 ===================================
 0.2                           ! Sample Time,sec
-70.0  0.0  0.0  231           ! Mounting Angles (deg), Seq in Body
+30.0  20.0  10.0  213         ! Mounting Angles (deg), Seq in Body
 32.0   32.0                   ! X, Y FOV Size, deg
 0.1                           ! Noise Equivalent Angle, deg RMS
 0.5                           ! Quantization, deg
@@ -148,11 +156,11 @@ FALSE  FALSE  FALSE           ! TrnDOF Locked
 0                             ! Number of Star Trackers
 =============================== ST 0 ====================================
 0.25                          ! Sample Time,sec
--90.0  90.0  00.0  321        ! Mounting Angles (deg), Seq in Body
+30.0  20.0  10.0  213         ! Mounting Angles (deg), Seq in Body
 8.0   8.0                     ! X, Y FOV Size, deg
 30.0  10.0  10.0              ! Sun, Earth, Moon Exclusion Angles, deg
 2.0  2.0  20.0                ! Noise Equivalent Angle, arcsec RMS
-1                             ! Flex Node Index
+0                             ! Flex Node Index
 ****************************** GPS **************************************
 0                             ! Number of GPS Receivers
 ============================= GPSR 0 ====================================
@@ -175,4 +183,3 @@ FALSE  FALSE  FALSE           ! TrnDOF Locked
 0.0                           ! DV Noise, m/s
 0.5                           ! Initial Bias (m/s^2)
 0                             ! Flex Node Index
-

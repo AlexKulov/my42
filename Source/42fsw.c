@@ -1233,9 +1233,10 @@ void MomBiasFSW(struct SCType *S)
             Bdot[i] = (AC->bvb[i]-bvbold[i])/AC->DT;
             bvbold[i] = AC->bvb[i];
             AC->MTB[i].Mcmd = -Kbdot*Bdot[i];
-
-            AC->G[0].Cmd.Ang[i] = 0.0;
-            AC->G[0].Cmd.AngRate[i] = 0.0;
+            if(AC->Ng>0){
+                AC->G[0].Cmd.Ang[i] = 0.0;
+                AC->G[0].Cmd.AngRate[i] = 0.0;
+            }
          }
 
       }
@@ -1261,19 +1262,21 @@ void MomBiasFSW(struct SCType *S)
          Mcmd[2] /= magb2;
          for(i=0;i<3;i++) AC->MTB[i].Mcmd = Mcmd[i];
 
-         /* Solar Array Gimbal */
-         AC->G[0].Cmd.AngRate[0] = -PitchRateCmd;
-         if (AC->SunValid) {
-            PointGimbalToTarget(AC->G[0].RotSeq, AC->G[0].CGiBi,
-               AC->G[0].CBoGo, AC->svb, Zvec, AC->G[0].Cmd.Ang);
+         if(AC->Ng>0){
+             /* Solar Array Gimbal */
+             AC->G[0].Cmd.AngRate[0] = -PitchRateCmd;
+             if (AC->SunValid) {
+                 PointGimbalToTarget(AC->G[0].RotSeq, AC->G[0].CGiBi,
+                                     AC->G[0].CBoGo, AC->svb, Zvec, AC->G[0].Cmd.Ang);
+             }
+             else {
+                 AC->G[0].Cmd.Ang[0] += PitchRateCmd*AC->DT;
+             }
+             if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] > Pi)
+                 AC->G[0].Cmd.Ang[0] += TwoPi;
+             if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] < -Pi)
+                 AC->G[0].Cmd.Ang[0] -= TwoPi;
          }
-         else {
-            AC->G[0].Cmd.Ang[0] += PitchRateCmd*AC->DT;
-         }
-         if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] > Pi)
-            AC->G[0].Cmd.Ang[0] += TwoPi;
-         if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] < -Pi)
-            AC->G[0].Cmd.Ang[0] -= TwoPi;
       }
 }
 /**********************************************************************/
@@ -1292,22 +1295,23 @@ void ThreeAxisFSW(struct SCType *S)
       C = &AC->ThreeAxisCtrl;
 
       if (C->Init) {
-         C->Init = 0;
-         for(j=0;j<3;j++) {
-            AC->G[0].Cmd.AngRate[j] = 0.0;
-            AC->G[0].Cmd.Ang[j] = 0.0;
-            AC->G[0].MaxAngRate[j] = 0.2*D2R;
-            AC->G[0].MaxTrq[j] = 100.0;
-            FindPDGains(S->B[1].I[1][1],0.02*TwoPi,1.0,
-               &AC->G[0].AngRateGain[j],&AC->G[0].AngGain[j]);
-         }
-
-         for(i=0;i<3;i++) {
-            FindPDGains(AC->MOI[i][i],0.1,0.7,
-                        &C->Kr[i],&C->Kp[i]);
-            C->Hwcmd[i] = 0.0;
-         }
-         C->Kunl = 1.0E6;
+          C->Init = 0;
+          if(AC->Ng>0){
+              for(j=0;j<3;j++) {
+                  AC->G[0].Cmd.AngRate[j] = 0.0;
+                  AC->G[0].Cmd.Ang[j] = 0.0;
+                  AC->G[0].MaxAngRate[j] = 0.2*D2R;
+                  AC->G[0].MaxTrq[j] = 100.0;
+                  FindPDGains(S->B[1].I[1][1],0.02*TwoPi,1.0,
+                              &AC->G[0].AngRateGain[j],&AC->G[0].AngGain[j]);
+              }
+          }
+          for(i=0;i<3;i++) {
+              FindPDGains(AC->MOI[i][i],0.1,0.7,
+                          &C->Kr[i],&C->Kp[i]);
+              C->Hwcmd[i] = 0.0;
+          }
+          C->Kunl = 1.0E6;
       }
 
       /* Find Attitude Command */
@@ -1333,18 +1337,20 @@ void ThreeAxisFSW(struct SCType *S)
       for(i=0;i<3;i++) AC->MTB[i].Mcmd = C->Kunl*HxB[i];
 
       /* Solar Array Gimbal */
-      AC->G[0].Cmd.AngRate[0] = wln[1];
-      if (AC->SunValid) {
-         PointGimbalToTarget(AC->G[0].RotSeq, AC->G[0].CGiBi,
-               AC->G[0].CBoGo, AC->svb, Zvec,AC->G[0].Cmd.Ang);
+      if(AC->Ng>0){
+          AC->G[0].Cmd.AngRate[0] = wln[1];
+          if (AC->SunValid) {
+              PointGimbalToTarget(AC->G[0].RotSeq, AC->G[0].CGiBi,
+                                  AC->G[0].CBoGo, AC->svb, Zvec,AC->G[0].Cmd.Ang);
+          }
+          else {
+              AC->G[0].Cmd.Ang[0] += wln[1]*AC->DT;
+          }
+          if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] > Pi)
+              AC->G[0].Cmd.Ang[0] += TwoPi;
+          if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] < -Pi)
+              AC->G[0].Cmd.Ang[0] -= TwoPi;
       }
-      else {
-         AC->G[0].Cmd.Ang[0] += wln[1]*AC->DT;
-      }
-      if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] > Pi)
-         AC->G[0].Cmd.Ang[0] += TwoPi;
-      if (AC->G[0].Ang[0] - AC->G[0].Cmd.Ang[0] < -Pi)
-         AC->G[0].Cmd.Ang[0] -= TwoPi;
 }
 /**********************************************************************/
 void IssFSW(struct SCType *S)
@@ -1842,7 +1848,7 @@ void FlightSoftWare(struct SCType *S)
       long Iipc;
       #endif
 
-      if (S->FreqRespActive) {
+      if (FALSE) {//S->FreqRespActive
          FreqResp(S);
       }
             

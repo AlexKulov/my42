@@ -107,13 +107,13 @@ void ToPlot(double Time){
 
 int exec(int argc,char **argv);
 #ifdef __cplusplus
-};
+}
 #endif
 
-void MainWindow::StartSimulation()
-{
-    int argc = 1;
-    exec(argc, NULL);
+void MainWindow::StartSimulation(){
+
+    //exec(mainArgc, mainArgv);
+    exec(argc, argv);
 }
 
 void MainWindow::setupPlots()

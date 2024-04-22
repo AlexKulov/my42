@@ -3,7 +3,7 @@ QT -= gui
 CONFIG += console
 CONFIG -= app_bundle
 
-#DEFINES += _USE_GUI_
+DEFINES += _USE_GUI_
 DEFINES += _USE_SHADERS_
 
 CONFIG += QTPLOT
@@ -77,13 +77,5 @@ SOURCES += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-HEADERS += \
-    Include/42.h \
-    Include/42defines.h \
-    Include/42glfwgui.h \
-    Include/42types.h \
-    Include/AcTypes.h \
-    Kit/Include/glkit.h \
 
 LIBS += -lopengl32 -lfreeglut -lglu32 -lws2_32 -lglew32

@@ -20,6 +20,8 @@ Q_OBJECT
 QTimer timerPlotPaint;
 //----------------------------------------------------------
 public:
+    int argc;
+    char **argv;
 explicit MainWindow(QWidget *parent = nullptr);
 ~MainWindow();
 
