@@ -27,13 +27,7 @@
 #endif
 
 #ifdef _USE_QTPLOT_
-    #ifdef __cplusplus
-    extern "C"{
-    #endif
     extern void ToPlot(double Time);
-    #ifdef __cplusplus
-    };
-    #endif
 #endif
 
 /**********************************************************************/

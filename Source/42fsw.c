@@ -15,6 +15,7 @@
 #include "42.h"
 
 void AcFsw(struct AcType *AC);
+void MySunMode(struct SCType *S);
 void WriteToSocket(SOCKET Socket, char **Prefix, long Nprefix, long EchoEnabled);
 void ReadFromSocket(SOCKET Socket, long EchoEnabled);
 
@@ -1912,6 +1913,9 @@ void FlightSoftWare(struct SCType *S)
                break;
             case FREQRESP_FSW:
                FreqRespFSW(S);
+               break;
+            case SUN_MODE:
+               MySunMode(S);
                break;
          }
       }

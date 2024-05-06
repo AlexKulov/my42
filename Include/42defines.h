@@ -244,6 +244,7 @@
 #define THR_FSW 8
 #define CFS_FSW 9
 #define FREQRESP_FSW 10
+#define SUN_MODE 11
 
 /* Command Types */
 #define CMD_DIRECTION 0

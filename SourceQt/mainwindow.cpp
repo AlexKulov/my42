@@ -48,11 +48,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+void ToPlot(double Time);
 
-void CppToPlot(double SimTime){
+int exec(int argc,char **argv);
+#ifdef __cplusplus
+}
+#endif
+
+extern double sunAng;
+void ToPlot(double SimTime){
     mSimTime = SimTime;
 
-    double ParamPlot11[3] = {0,1,2};
     double ParamPlot12[3] = {0,1,2};
     double ParamPlot13[3] = {0,1,2};
 
@@ -62,57 +71,56 @@ void CppToPlot(double SimTime){
     PlotSampleCounter++;
     if(PlotSampleCounter>PlotMaxCounter){
         PlotSampleCounter = 0;
-        extUi->Plot11->graph(0)->addData(SimTime,ParamPlot11[0]);
+        if(true){
+            extUi->Plot11->graph(0)->addData(SimTime,sunAng);
+            extUi->Plot11->rescaleAxes();
+            extUi->Plot11->replot();
+        }
 
-        extUi->Plot12->graph(0)->addData(SimTime,ParamPlot12[0]);
-        extUi->Plot12->graph(1)->addData(SimTime,ParamPlot12[1]);
+        if(false){
+            extUi->Plot12->graph(0)->addData(SimTime,ParamPlot12[0]);
+            extUi->Plot12->graph(1)->addData(SimTime,ParamPlot12[1]);
+            extUi->Plot12->rescaleAxes();
+            extUi->Plot12->replot();
+        }
 
-        extUi->Plot13->graph(0)->addData(SimTime,ParamPlot13[0]);
-        extUi->Plot13->graph(1)->addData(SimTime,ParamPlot13[1]);
-        extUi->Plot13->graph(2)->addData(SimTime,ParamPlot13[2]);
+        if(false){
+            extUi->Plot13->graph(0)->addData(SimTime,ParamPlot13[0]);
+            extUi->Plot13->graph(1)->addData(SimTime,ParamPlot13[1]);
+            extUi->Plot13->graph(2)->addData(SimTime,ParamPlot13[2]);
+            extUi->Plot13->rescaleAxes();
+            extUi->Plot13->replot();
+        }
 
-        extUi->Plot21->graph(0)->addData(SimTime,0);
-        extUi->Plot22->graph(0)->addData(SimTime,1);
+        if(false){
+            extUi->Plot21->graph(0)->addData(SimTime,0);
+            extUi->Plot21->rescaleAxes();
+            extUi->Plot21->replot();
+        }
 
-        extUi->Plot31->graph(0)->addData(SimTime,-1);
-        extUi->Plot32->graph(0)->addData(SimTime,1);
+        if(false){
+            extUi->Plot22->graph(0)->addData(SimTime,1);
+            extUi->Plot22->rescaleAxes();
+            extUi->Plot22->replot();
+        }
 
-        extUi->Plot11->rescaleAxes();
-        extUi->Plot11->replot();
-        extUi->Plot12->rescaleAxes();
-        extUi->Plot12->replot();
-        extUi->Plot13->rescaleAxes();
-        extUi->Plot13->replot();
+        if(false){
+            extUi->Plot31->graph(0)->addData(SimTime,-1);
+            extUi->Plot31->rescaleAxes();
+            extUi->Plot31->replot();
+        }
 
-        extUi->Plot21->rescaleAxes();
-        extUi->Plot21->replot();
-        extUi->Plot22->rescaleAxes();
-        extUi->Plot22->replot();
-
-        extUi->Plot31->rescaleAxes();
-        extUi->Plot31->replot();
-        extUi->Plot32->rescaleAxes();
-        extUi->Plot32->replot();
-
+        if(false){
+            extUi->Plot32->graph(0)->addData(SimTime,1);
+            extUi->Plot32->rescaleAxes();
+            extUi->Plot32->replot();
+        }
         QApplication::processEvents();
     }
-}
 
-#ifdef __cplusplus
-extern "C"{
-#endif
-void ToPlot(double Time){
-    CppToPlot(Time);
 }
-
-int exec(int argc,char **argv);
-#ifdef __cplusplus
-}
-#endif
 
 void MainWindow::StartSimulation(){
-
-    //exec(mainArgc, mainArgv);
     exec(argc, argv);
 }
 

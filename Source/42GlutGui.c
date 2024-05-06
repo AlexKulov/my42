@@ -4145,6 +4145,7 @@ void TimerHandler(int value)
       TimerHasExpired = 1;
 }
 /*********************************************************************/
+#include "freeglut_ext.h"
 void Idle(void)
 {
       long MaxCamFrame = 20000;
@@ -4209,7 +4210,12 @@ void Idle(void)
          }
       }
 
-      if (Done) exit(0);
+      if (Done){
+          glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,
+                        GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+          glutLeaveMainLoop();
+          //exit(0);
+      }
 }
 /**********************************************************************/
 /* Backspace = 0x08, Tab = 0x09, Line Feed = 0x0A */

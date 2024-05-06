@@ -11,19 +11,19 @@ QTPLOT {
     DEFINES += _USE_QTPLOT_
     QT += core gui widgets
     QT+=network printsupport #for customplot
-    INCLUDEPATH +=PlotQt \
+    INCLUDEPATH +=SourceQt \
 
     SOURCES += \
-    PlotQt/Source/mainwindow.cpp \
-    PlotQt/main.cpp \
-    PlotQt/qcustomplot.cpp \
+    SourceQt/mainwindow.cpp \
+    SourceQt/main.cpp \
+    SourceQt/qcustomplot.cpp \
 
     HEADERS += \
-    PlotQt/Source/mainwindow.h \
-    PlotQt/qcustomplot.h
+    SourceQt/mainwindow.h \
+    SourceQt/qcustomplot.h
 
     FORMS += \
-    PlotQt/mainwindow.ui
+    SourceQt/mainwindow.ui
 } else {
     SOURCES += \
     Source/42main.c \
@@ -72,6 +72,7 @@ SOURCES += \
         Source/IPC/SimReadFromSocket.c \
         Source/IPC/SimWriteToFile.c \
         Source/IPC/SimWriteToSocket.c \
+        Source/MyFsw.c
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

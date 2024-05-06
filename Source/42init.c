@@ -144,6 +144,7 @@ long DecodeString(char *s)
       else if (!strcmp(s,"THR_FSW")) return THR_FSW;
       else if (!strcmp(s,"CFS_FSW")) return CFS_FSW;
       else if (!strcmp(s,"FREQRESP_FSW")) return FREQRESP_FSW;
+      else if (!strcmp(s,"SUN_MODE")) return SUN_MODE;
 
       else if (!strcmp(s,"PHOBOS")) return PHOBOS;
       else if (!strcmp(s,"DEIMOS")) return DEIMOS;

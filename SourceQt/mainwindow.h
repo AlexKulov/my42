@@ -21,7 +21,7 @@ QTimer timerPlotPaint;
 //----------------------------------------------------------
 public:
     int argc;
-    char **argv;
+    char ** argv;
 explicit MainWindow(QWidget *parent = nullptr);
 ~MainWindow();
 
